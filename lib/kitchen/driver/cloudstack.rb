@@ -154,7 +154,7 @@ module Kitchen
               error("SSH key #{keypair} is not a Private Key. Please modify your .kitchen.yml")
             end
 
-            wait_for_sshd(state[:hostname], config[:username], {:keys => keypair})
+            wait_for_sshd(state[:hostname], config[:username], {:keys => keypair, :number_of_password_prompts => 0})
             debug("SSH connectivity validated with keypair.")
 
             ssh = Fog::SSH.new(state[:hostname], config[:username], {:keys => keypair})
@@ -165,7 +165,7 @@ module Kitchen
             # Print out IP and password so you can record it if you want.
             info("Password for #{config[:username]} at #{state[:hostname]} is #{password}")
 
-            wait_for_sshd(state[:hostname], config[:username], {:password => password})
+            wait_for_sshd(state[:hostname], config[:username], {:password => password, :number_of_password_prompts => 0})
             debug("SSH connectivity validated with cloudstack-set password.")
 
             ssh = Fog::SSH.new(state[:hostname], config[:username], {:password => password})
@@ -173,7 +173,7 @@ module Kitchen
           elsif (!config[:password].nil?)
             info("Connecting with user #{config[:username]} with password #{config[:password]}")
 
-            wait_for_sshd(state[:hostname], config[:username], {:password => config[:password]})
+            wait_for_sshd(state[:hostname], config[:username], {:password => config[:password], :number_of_password_prompts => 0})
             debug("SSH connectivity validated with fixed password.")
 
             ssh = Fog::SSH.new(state[:hostname], config[:username], {:password => config[:password]})
